@@ -1,4 +1,4 @@
-resource "aws_vpc" "default" {
+resource "aws_vpc" "this" {
   cidr_block = var.cidr
 
   enable_dns_support   = true
@@ -13,8 +13,8 @@ resource "aws_vpc" "default" {
   }
 }
 
-resource "aws_route_table" "default" {
-  vpc_id = aws_vpc.default.id
+resource "aws_route_table" "this" {
+  vpc_id = aws_vpc.this.id
 
   tags = var.tags
 
@@ -25,13 +25,13 @@ resource "aws_route_table" "default" {
   }
 }
 
-resource "aws_main_route_table_association" "default" {
-  vpc_id         = aws_vpc.default.id
-  route_table_id = aws_route_table.default.id
+resource "aws_main_route_table_association" "this" {
+  vpc_id         = aws_vpc.this.id
+  route_table_id = aws_route_table.this.id
 }
 
-resource "aws_internet_gateway" "default" {
-  vpc_id = aws_vpc.default.id
+resource "aws_internet_gateway" "this" {
+  vpc_id = aws_vpc.this.id
 
   tags = var.tags
 
@@ -42,16 +42,16 @@ resource "aws_internet_gateway" "default" {
   }
 }
 
-resource "aws_route" "default" {
-  route_table_id         = aws_route_table.default.id
+resource "aws_route" "this" {
+  route_table_id         = aws_route_table.this.id
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = aws_internet_gateway.default.id
+  gateway_id             = aws_internet_gateway.this.id
 }
 
-resource "aws_subnet" "default" {
+resource "aws_subnet" "this" {
   for_each                = local.subnet_cidrs
 
-  vpc_id                  = aws_vpc.default.id
+  vpc_id                  = aws_vpc.this.id
   cidr_block              = each.value
   map_public_ip_on_launch = true
   availability_zone       = "${data.aws_region.current.name}${each.key}"

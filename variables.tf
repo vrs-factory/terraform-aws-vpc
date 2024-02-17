@@ -4,8 +4,8 @@ variable "name" {
 
 variable "cidr" {
   type        = string
-  default     = "172.10.0.0/16"
   description = "CIDR to use for VPC and its subnets."
+  default     = "172.10.0.0/16"
 }
 
 variable "subnets" {
@@ -20,6 +20,6 @@ variable "enable_dns_hostnames" {
 
 variable "tags" {
   type        = map(string)
-  default     = {}
   description = "A mapping of resource tags."
+  default     = {}
 }
